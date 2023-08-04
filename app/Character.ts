@@ -3,6 +3,7 @@ class Character {
   private health: number = 1000;
   private maxHealth: number = 1000;
   private alive: boolean = true;
+  private factions: string[] = [];
 
   getHealth() {
     return this.health;
@@ -10,6 +11,31 @@ class Character {
 
   isAlive() {
     return this.alive;
+  }
+
+  getFactions() {
+    return this.factions;
+  }
+
+  joinFaction(faction: string) {
+    this.factions.push(faction);
+  }
+
+  leaveFaction(faction: string) {
+    this.factions = this.factions.filter((f) => f !== faction);
+  }
+
+  private targetIsAlly(target: Character) {
+    return !!target.getFactions().find((tf) => this.getFactions().includes(tf));
+  }
+
+  dealDamage(target: Character, attackDamage: number) {
+    if (!this.targetIsAlly(target))
+      target.receiveAttack(attackDamage, this.getLevel());
+  }
+
+  healAlly(target: Character) {
+    if (this.targetIsAlly(target)) target.heal();
   }
 
   private isAttackerLevelAboveThreshold(attackerLevel: number) {
@@ -46,7 +72,7 @@ class Character {
   heal() {
     if (!this.alive) return;
 
-    this.health = 1000;
+    this.health = this.maxHealth;
   }
 
   getLevel(): number {
