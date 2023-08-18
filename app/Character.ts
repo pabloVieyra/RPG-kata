@@ -26,37 +26,26 @@ class Character {
   }
 
   private targetIsAlly(target: Character) {
+    //refactor
     return !!target.getFactions().find((tf) => this.getFactions().includes(tf));
   }
 
-  dealDamage(target: Character, attackDamage: number) {
-    if (!this.targetIsAlly(target))
-      target.receiveAttack(attackDamage, this.getLevel());
-  }
 
   healAlly(target: Character) {
     if (this.targetIsAlly(target)) target.heal();
   }
 
-  private isAttackerLevelAboveThreshold(attackerLevel: number) {
-    return attackerLevel >= this.level + 5;
-  }
-
-  private isAttackerLevelBelowThreshold(attackerLevel: number) {
-    return attackerLevel <= this.level - 5;
-  }
-
-  receiveAttack(damage: number, attackerLevel: number) {
+  receiveAttack(damage: number) {
     let realDamage = damage;
 
-    if (this.isAttackerLevelAboveThreshold(attackerLevel)) {
+    /* if (this.isAttackerLevelAboveThreshold(attackerLevel)) {
       realDamage = realDamage * 1.5;
     }
 
     if (this.isAttackerLevelBelowThreshold(attackerLevel)) {
       realDamage = realDamage * 0.5;
     }
-
+ */
     this.applyDamage(realDamage);
   }
 
